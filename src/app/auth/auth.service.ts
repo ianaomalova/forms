@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, User, getAuth, updateProfile } from '@angular/fire/auth';
+import {
+  Auth, createUserWithEmailAndPassword, User, getAuth, updateProfile, signInWithEmailAndPassword
+}
+  from '@angular/fire/auth';
 import {BehaviorSubject, from, Observable, switchMap} from 'rxjs';
 
 @Injectable({
@@ -24,6 +27,17 @@ export class AuthService {
             );
         })
       );
+  }
+
+  login(email: string, password: string): Observable<any> {
+    return from(signInWithEmailAndPassword(this.auth, email, password))
+      .pipe(
+        switchMap((userCredential) => {
+          const user = userCredential.user;
+          this.user$.next(user);
+          return [user];
+        })
+      )
   }
 
   getCurrentUser() {

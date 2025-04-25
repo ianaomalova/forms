@@ -3,6 +3,7 @@ import {NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet} from '@angular/common
 import { trigger, transition, style, animate } from '@angular/animations';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../../auth/auth.service';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -39,7 +40,11 @@ export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
   registerForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.initForms();
@@ -82,6 +87,18 @@ export class AuthComponent implements OnInit {
       this.loginForm.markAllAsTouched();
       return;
     }
+
+    const {email, password} = this.loginForm.value;
+
+    this.authService.login(email, password).subscribe({
+      next: (res) => {
+        console.log('Успешный вход', res);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error) => {
+        console.error('Ошибка входа:', error.message);
+      }
+    })
   }
 
   onSubmitRegister() {
@@ -93,8 +110,9 @@ export class AuthComponent implements OnInit {
     const {firstName, lastName, email, password} = this.registerForm.value;
 
     this.authService.register(email, password, firstName, lastName).subscribe({
-      next: (userCredential) => {
-        console.log('Успешная регистрация', userCredential.user);
+      next: (res) => {
+        console.log('Успешная регистрация', res);
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => {
         console.log(error);
