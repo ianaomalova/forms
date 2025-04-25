@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet} from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {AuthService} from '../../../auth/auth.service';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
   registerForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
 
   ngOnInit() {
     this.initForms();
@@ -81,11 +82,40 @@ export class AuthComponent implements OnInit {
       this.loginForm.markAllAsTouched();
       return;
     }
-
-    console.log(this.loginForm);
   }
 
   onSubmitRegister() {
-    console.log(this.registerForm);
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    const {firstName, lastName, email, password} = this.registerForm.value;
+
+    this.authService.register(email, password, firstName, lastName).subscribe({
+      next: (userCredential) => {
+        console.log('Успешная регистрация', userCredential.user);
+      },
+      error: (error) => {
+        console.log(error);
+        this.handleAuthError(error);
+      }
+    })
+  }
+
+  private handleAuthError(error: any) {
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        alert('Этот email уже используется');
+        break;
+      case 'auth/invalid-email':
+        alert('Неверный формат email');
+        break;
+      case 'auth/weak-password':
+        alert('Пароль должен содержать минимум 6 символов');
+        break;
+      default:
+        alert('Неизвестная ошибка: ' + error.message);
+    }
   }
 }
