@@ -1,0 +1,94 @@
+<div
+  [ngSwitch]='mode'
+  [@formSwitch]="mode"
+  class='container'>
+  <ng-container *ngSwitchCase="'login'">
+    <ng-container *ngTemplateOutlet=loginForm></ng-container>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'register'">
+    <ng-container *ngTemplateOutlet=registerForm></ng-container>
+  </ng-container>
+</div>
+
+
+<!--    Форма логина   -->
+<ng-template #loginForm>
+  <form class='form'>
+    <div class='form__icon'>
+      <img src='../../../../assets/images/login-page/login.svg' alt='login icon'>
+    </div>
+
+    <h1 class='form__heading'>Авторизация</h1>
+    <p class='form__desc'>Войти с помощью почты</p>
+
+    <div class='form__controls-wrapper'>
+      <div class='form__control-wrapper'>
+        <img class='form__control--img' src='../../../../assets/images/login-page/email.svg'>
+        <input class='form__control form__control-email' type='text' placeholder='Email'>
+      </div>
+
+      <div class='form__control-wrapper'>
+        <img class='form__control--img' src='../../../../assets/images/login-page/password.svg'>
+        <input class='form__control form__control-password' type='text' placeholder='Пароль'>
+      </div>
+    </div>
+
+    <button class='form__btn button' type='submit'>Войти</button>
+
+    <div class='form__actions'>
+      <p class='form__action'>Забыли пароль? <a class='link'>Сбросить</a></p>
+      <p class='form__action'>Нет аккаунта?
+        <button class='link btn-link' (click)='toggleMode($event, "register")'>Зарегистрироваться</button>
+      </p>
+    </div>
+  </form>
+</ng-template>
+
+
+<!--    Форма регистрации   -->
+<ng-template #registerForm>
+  <form class='form'>
+    <div class='form__icon'>
+      <img src='../../../../assets/images/login-page/add-profile.svg' alt='login icon'>
+    </div>
+
+    <h1 class='form__heading'>Регистрация</h1>
+    <p class='form__desc'>Зарегестрироваться с помощью почты</p>
+
+    <div class='form__controls-wrapper'>
+      <div class='form__control-wrapper'>
+        <img class='form__control--img' src='../../../../assets/images/login-page/user.svg'>
+        <input class='form__control form__control-email' type='text' placeholder='Имя'>
+      </div>
+
+      <div class='form__control-wrapper'>
+        <img class='form__control--img' src='../../../../assets/images/login-page/user.svg'>
+        <input class='form__control form__control-password' type='text' placeholder='Фамилия'>
+      </div>
+
+      <div class='form__control-wrapper'>
+        <img class='form__control--img' src='../../../../assets/images/login-page/email.svg'>
+        <input class='form__control form__control-password' type='text' placeholder='Email'>
+      </div>
+
+      <div class='form__control-wrapper'>
+        <img class='form__control--img' src='../../../../assets/images/login-page/password.svg'>
+        <input class='form__control form__control-password' type='text' placeholder='Введите пароль'>
+      </div>
+
+      <div class='form__control-wrapper'>
+        <img class='form__control--img' src='../../../../assets/images/login-page/password.svg'>
+        <input class='form__control form__control-password' type='text' placeholder='Повторите пароль'>
+      </div>
+    </div>
+
+    <button class='form__btn button' type='submit'>Войти</button>
+
+    <div class='form__actions'>
+      <p class='form__action'>Есть аккаунт?
+        <button class='link btn-link' (click)='toggleMode($event, "login")'>Войти</button>
+      </p>
+    </div>
+  </form>
+</ng-template>
