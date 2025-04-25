@@ -1,11 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap');
+@import "primeicons/primeicons.css";
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Cascadia Code", sans-serif;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;

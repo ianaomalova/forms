@@ -80,6 +80,8 @@ export class AuthComponent implements OnInit {
   toggleMode(event: Event, mode: 'login' | 'register') {
     event.preventDefault();
     this.mode = mode;
+    this.loginForm.reset()
+    this.registerForm.reset();
   }
 
   onSubmitLogin() {
@@ -109,7 +111,7 @@ export class AuthComponent implements OnInit {
 
     const {firstName, lastName, email, password} = this.registerForm.value;
 
-    this.authService.register(email, password, firstName, lastName).subscribe({
+    this.authService.registerUser(email, password, firstName, lastName).subscribe({
       next: (res) => {
         console.log('Успешная регистрация', res);
         this.router.navigate(['/dashboard']);
