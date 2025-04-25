@@ -1,0 +1,67 @@
+<main class='main'>
+  <div class='container'>
+    <h1>Создание формы</h1>
+    <div class='main__wrapper'>
+      <div class='main__menu border' [ngSwitch]='mode'>
+        <div class='main__menu-buttons'>
+          <button
+            class='main__menu-btn cursor-pointer'
+            (click)='toggle("constructor")'
+            [ngClass]="{'active': mode === 'constructor'}"
+          >
+            <i class="pi pi-home icon"></i>
+            Конструктор
+          </button>
+          <button
+            class='main__menu-btn cursor-pointer'
+            (click)='toggle("settings")'
+            [ngClass]="{'active': mode === 'settings'}"
+          >
+            <i class="pi pi-cog icon"></i>
+            Настройки
+          </button>
+        </div>
+        <ng-container *ngSwitchCase="'constructor'">
+          <ng-container *ngTemplateOutlet='constructor'></ng-container>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'settings'">
+          <ng-container *ngTemplateOutlet='settings'></ng-container>
+        </ng-container>
+      </div>
+      <div class='main__display-form'>
+
+        <div class='form__info border'>
+          <input class='form-input form__info-title' type='text' placeholder='Название'>
+          <textarea class='form-input' type='text' placeholder='Описание'></textarea>
+        </div>
+
+        <div class='form-elements border'>
+          <app-text-answer />
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<ng-template #constructor>
+  <div class='content'>
+    <h3 class='content__heading'>Элементы формы</h3>
+    <ul class='content__list'>
+      @for (item of items; track item.label) {
+        <li class='content__list-item cursor-pointer'><i [class]='item.icon' class='icon'></i> {{item.label}}</li>
+      }
+    </ul>
+    <div class='content__actions'>
+      <h3 class='content__heading'>Действия</h3>
+      <button class='content__action-save-btn cursor-pointer'><i class='pi pi-save icon'></i>Сохранить форму</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #settings>
+  <div class='content'>
+    <h3 class='content__heading'>Настройки</h3>
+  </div>
+</ng-template>

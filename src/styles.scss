@@ -3,6 +3,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap');
 @import "primeicons/primeicons.css";
 
+:root {
+  --primary: #646cff;
+  --primary-hover: #898FFF;
+  --accent: rgba(250, 98, 98, 0.53);
+  --bg-dark: #292828;
+  --bg-light: #757474;
+  --text-light: #ffffff;
+  --border-dark: #4b5563;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -17,6 +27,10 @@ body {
 
 h1, h2, h3, h4, h5, h6, p {
   margin: 0;
+}
+
+button, input::placeholder, textarea::placeholder {
+  font-family: "Cascadia Code", sans-serif;
 }
 
 .link {
@@ -79,3 +93,29 @@ img {
 .invalid-form-control {
   border: 2px solid red !important;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.form-input {
+  background: rgba(100, 108, 255, 0.05);
+  color: var(--text-light);
+  width: 100%;
+  border: 2px solid var(--border-dark);
+  border-radius: 8px;
+  padding: 12px 15px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  &:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.2);
+    outline: none;
+  }
+}
+

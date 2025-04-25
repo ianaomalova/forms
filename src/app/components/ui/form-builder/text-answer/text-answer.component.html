@@ -1,0 +1,37 @@
+<div class='wrapper'>
+
+  <div class='main-col'>
+    <div class='input'>
+      <input class='form-input' type='text' placeholder='Вопрос'>
+    </div>
+
+    <div class='bottom-row'>
+      <div class='type-answer'>
+        @if (typeAnswer === "single") {
+          <i class='pi pi-pen-to-square'></i>
+          Однострочный ответ
+        } @else {
+          <i class='pi pi-align-left'></i>
+          Многострочный ответ
+        }
+      </div>
+
+      <div class='actions'>
+        <button class='copy-btn cursor-pointer'>
+          <i class='pi pi-copy'></i>
+        </button>
+        <p-toggleswitch [(ngModel)]="checked" />
+        <button class='delete-btn cursor-pointer'>
+          <i class='pi pi-times'></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class='drag-and-drop'>
+    <i class="pi pi-ellipsis-v icon"></i>
+    <i class="pi pi-ellipsis-v icon"></i>
+  </div>
+
+</div>

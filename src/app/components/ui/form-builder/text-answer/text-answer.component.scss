@@ -1,0 +1,76 @@
+:host {
+  width: 100%;
+}
+
+.wrapper {
+  border: 2px solid var(--border-dark);
+  box-shadow: 0 6px 10px rgba(100, 108, 255, 0.15);
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr 25px;
+}
+
+.input {
+  border-bottom: 1px solid var(--border-dark);
+  padding: 15px 20px;
+
+}
+
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+}
+
+.drag-and-drop {
+  border-left: 1px solid var(--border-dark);
+  color: var(--text-light);
+  cursor: move;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    position: relative;
+    left: -4px;
+    width: 7px;
+  }
+}
+
+.drag-and-drop:hover {
+  color: var(--accent);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-btn {
+  border: none;
+  outline: none;
+  background: none;
+  padding: 10px;
+
+  i {
+    color: red;
+  }
+}
+
+.copy-btn {
+  border: none;
+  outline: none;
+  background: none;
+  padding: 10px;
+
+  i {
+    color: var(--text-light);
+  }
+}
+
+.delete-btn:hover {
+  background-color: var(--accent);
+  border-radius: 8px;
+}

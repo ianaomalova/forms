@@ -52,25 +52,6 @@
   font-weight: 900;
 }
 
-.form__control {
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 20px 30px 20px 37px;
-  height: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-  &:hover {
-    border-color: #646cff;
-    box-shadow: 0 0 8px rgba(100, 108, 255, 0.5);
-  }
-  &:focus {
-    outline: none;
-    border: 1px solid #646cff;
-    box-shadow: 0 0 8px rgba(100, 108, 255, 0.5);
-  }
-}
-
 .form__btn {
   display: block;
   width: 90%;
@@ -86,4 +67,23 @@
 
 .form__action {
   text-align: right;
+}
+
+
+.form__control {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #646cff;
+  padding: 20px 30px 20px 37px;
+  height: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  &:hover {
+    box-shadow: 0 0 8px rgba(100, 108, 255, 0.5);
+  }
+  &:focus {
+    outline: none;
+    border: 1px solid #646cff;
+    box-shadow: 0 0 8px rgba(100, 108, 255, 0.5);
+  }
 }

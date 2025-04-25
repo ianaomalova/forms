@@ -1,0 +1,20 @@
+<header class='header'>
+  <div class='container header__wrapper'>
+    <h1 class='heading'>FORMS</h1>
+    <nav class='nav'>
+      <div class='nav__links'>
+        <a
+          class='nav__link'
+          routerLink="/dashboard"
+          routerLinkActive='active'
+          [routerLinkActiveOptions]="{ exact: true }"
+        >Главная</a>
+        <a class='nav__link' routerLink="create-form" routerLinkActive='active'>Новая форма</a>
+        <a class='nav__link' routerLink="profile" routerLinkActive='active'>Профиль</a>
+      </div>
+      <button class='nav__btn-logout' (click)='logout()'>
+        <i class="pi pi-sign-out"></i>
+      </button>
+    </nav>
+  </div>
+</header>
