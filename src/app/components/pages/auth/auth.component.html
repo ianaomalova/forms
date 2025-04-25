@@ -3,18 +3,18 @@
   [@formSwitch]="mode"
   class='container'>
   <ng-container *ngSwitchCase="'login'">
-    <ng-container *ngTemplateOutlet=loginForm></ng-container>
+    <ng-container *ngTemplateOutlet=login></ng-container>
   </ng-container>
 
   <ng-container *ngSwitchCase="'register'">
-    <ng-container *ngTemplateOutlet=registerForm></ng-container>
+    <ng-container *ngTemplateOutlet=register></ng-container>
   </ng-container>
 </div>
 
 
 <!--    Форма логина   -->
-<ng-template #loginForm>
-  <form class='form'>
+<ng-template #login>
+  <form class='form' [formGroup]="loginForm" (ngSubmit)='onSubmitLogin()'>
     <div class='form__icon'>
       <img src='../../../../assets/images/login-page/login.svg' alt='login icon'>
     </div>
@@ -25,12 +25,42 @@
     <div class='form__controls-wrapper'>
       <div class='form__control-wrapper'>
         <img class='form__control--img' src='../../../../assets/images/login-page/email.svg'>
-        <input class='form__control form__control-email' type='text' placeholder='Email'>
+        <input
+          class='form__control form__control-email'
+          [ngClass]="{'invalid-form-control' : loginForm.get('email')?.invalid && loginForm.get('email')?.touched}"
+          placeholder='Email'
+          formControlName='email'
+        >
+
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <span>
+            @if (loginForm.get('email')?.errors?.['required']) {
+              <small class='error-text'>Email обязателен</small>
+            }
+
+            @if (loginForm.get('email')?.errors?.['email']) {
+              <small class='error-text'>Укажите корректный email</small>
+            }
+          </span>
+        }
       </div>
 
       <div class='form__control-wrapper'>
         <img class='form__control--img' src='../../../../assets/images/login-page/password.svg'>
-        <input class='form__control form__control-password' type='text' placeholder='Пароль'>
+        <input
+          class='form__control form__control-password'
+          placeholder='Пароль'
+          formControlName='password'
+          type='password'
+        >
+
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <span>
+            @if (loginForm.get('password')?.errors?.['required']) {
+              <small class='error-text'>Пароль обязателен</small>
+            }
+          </span>
+        }
       </div>
     </div>
 
@@ -47,8 +77,8 @@
 
 
 <!--    Форма регистрации   -->
-<ng-template #registerForm>
-  <form class='form'>
+<ng-template #register>
+  <form class='form' [formGroup]="registerForm" (ngSubmit)='onSubmitRegister()'>
     <div class='form__icon'>
       <img src='../../../../assets/images/login-page/add-profile.svg' alt='login icon'>
     </div>
@@ -59,27 +89,101 @@
     <div class='form__controls-wrapper'>
       <div class='form__control-wrapper'>
         <img class='form__control--img' src='../../../../assets/images/login-page/user.svg'>
-        <input class='form__control form__control-email' type='text' placeholder='Имя'>
+        <input
+          class='form__control form__control-email'
+          placeholder='Имя'
+          formControlName='firstName'
+        >
+
+        @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
+          <span>
+            @if (registerForm.get('firstName')?.errors?.['required']) {
+              <small class='error-text'>Имя обязательно</small>
+            }
+          </span>
+        }
       </div>
 
       <div class='form__control-wrapper'>
         <img class='form__control--img' src='../../../../assets/images/login-page/user.svg'>
-        <input class='form__control form__control-password' type='text' placeholder='Фамилия'>
+        <input
+          class='form__control form__control-password'
+          placeholder='Фамилия'
+          formControlName='lastName'
+        >
+
+        @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
+          <span>
+            @if (registerForm.get('lastName')?.errors?.['required']) {
+              <small class='error-text'>Фамилия обязательна</small>
+            }
+          </span>
+        }
       </div>
 
       <div class='form__control-wrapper'>
         <img class='form__control--img' src='../../../../assets/images/login-page/email.svg'>
-        <input class='form__control form__control-password' type='text' placeholder='Email'>
+        <input
+          class='form__control form__control-password'
+          placeholder='Email'
+          formControlName='email'
+        >
+
+        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+          <span>
+            @if (registerForm.get('email')?.errors?.['required']) {
+              <small class='error-text'>Email обязателен</small>
+            }
+
+            @if (registerForm.get('email')?.errors?.['email']) {
+              <small class='error-text'>Укажите корректный email</small>
+            }
+          </span>
+        }
       </div>
 
       <div class='form__control-wrapper'>
         <img class='form__control--img' src='../../../../assets/images/login-page/password.svg'>
-        <input class='form__control form__control-password' type='text' placeholder='Введите пароль'>
+        <input
+          class='form__control form__control-password'
+          placeholder='Введите пароль'
+          formControlName='password'
+          type='password'
+        >
+
+        @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+          <span>
+            @if (registerForm.get('password')?.errors?.['required']) {
+              <small class='error-text'>Пароль обязателен</small>
+            }
+
+            @if (registerForm.get('password')?.errors?.['minLength']) {
+              <small class='error-text'>Пароль должен быть не менее 6 символов</small>
+            }
+          </span>
+        }
       </div>
 
       <div class='form__control-wrapper'>
         <img class='form__control--img' src='../../../../assets/images/login-page/password.svg'>
-        <input class='form__control form__control-password' type='text' placeholder='Повторите пароль'>
+        <input
+          class='form__control form__control-password'
+          placeholder='Повторите пароль'
+          formControlName='confirmPassword'
+          type='password'
+        >
+
+        @if (registerForm.get('confirmPassword')?.touched) {
+          <span>
+            @if (registerForm.get('confirmPassword')?.hasError('required')) {
+              <small class='error-text'>Подтвердите пароль</small>
+            }
+
+            @if (passwordMatch) {
+              <small class='error-text'>Пароли не совпадают</small>
+            }
+          </span>
+        }
       </div>
     </div>
 

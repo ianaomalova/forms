@@ -68,3 +68,11 @@ img {
   max-width: 1300px;
   margin: 0 auto;
 }
+
+.error-text {
+  color: red;
+}
+
+.invalid-form-control {
+  border: 2px solid red !important;
+}
