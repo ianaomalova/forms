@@ -36,21 +36,67 @@
           <textarea class='form-input' type='text' placeholder='Описание'></textarea>
         </div>
 
-        <div class='form-elements border'>
-          <app-text-answer />
+<!--------- DROP LIST --------->
+        <div
+          class='form-elements border'
+          cdkDropList
+          id="form-elements-list"
+          [cdkDropListData]='formElements'
+          (cdkDropListDropped)="onDrop($event)"
+          [cdkDropListConnectedTo]="['menuItemsList']"
+        >
+          @for (element of formElements; track element.id) {
+          <ng-container cdkDrag [cdkDragData]="element">
+            @switch (element.label) {
+              @case ('Однострочный ответ') {
+                <app-text-answer cdkDrag [typeAnswer]="'single'" />
+              }
+              @case ('Многострочный ответ') {
+                <app-text-answer cdkDrag [typeAnswer]="'multi'" />
+              }
+<!--              @case ('Список одиночного выбора') {-->
+<!--                <app-choice-answer [type]="'single'" />-->
+<!--              }-->
+<!--              @case ('Список множественного выбора') {-->
+<!--                <app-choice-answer [type]="'multiple'" />-->
+<!--              }-->
+            }
+          </ng-container>
+          }
         </div>
-
       </div>
     </div>
   </div>
 </main>
 
 <ng-template #constructor>
-  <div class='content'>
+  <div
+    class='content'
+  >
     <h3 class='content__heading'>Элементы формы</h3>
-    <ul class='content__list'>
-      @for (item of items; track item.label) {
-        <li class='content__list-item cursor-pointer'><i [class]='item.icon' class='icon'></i> {{item.label}}</li>
+
+<!-------    DRAG LIST --------->
+    <ul
+      class='content__list'
+      cdkDropList
+      id="menuItemsList"
+      [cdkDropListData]="drugItems"
+      (cdkDropListDropped)="onDrop($event)"
+    >
+      @for (item of drugItems; track item.label) {
+        <li
+          class='content__list-item cursor-pointer'
+          cdkDrag
+          [cdkDragData]="item"
+        >
+          <ng-template cdkDragPreview>
+            <li class="content__list-item cursor-pointer preview">
+              <i [class]="item.icon" class="icon"></i> {{item.label}}
+            </li>
+          </ng-template>
+
+          <i [class]='item.icon' class='icon'></i> {{item.label}}
+        </li>
       }
     </ul>
     <div class='content__actions'>
