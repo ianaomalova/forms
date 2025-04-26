@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet} from '@angular/common';
-import {MenuItem, PrimeIcons} from 'primeng/api';
+import {PrimeIcons} from 'primeng/api';
 import {TextAnswerComponent} from '../../ui/form-builder/text-answer/text-answer.component';
-import {DrugItem, FormElementData, FormElementType} from '../../../models/formElement.interface';
-import {CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {FormElementData, FormElementType} from '../../../models/formElement.interface';
 
 @Component({
   selector: 'app-create-form',
@@ -13,8 +12,6 @@ import {CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray, transferArray
     NgTemplateOutlet,
     NgClass,
     TextAnswerComponent,
-    CdkDropList,
-    DragDropModule
   ],
   templateUrl: './create-form.component.html',
   styleUrl: './create-form.component.scss'
@@ -22,6 +19,8 @@ import {CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray, transferArray
 export class CreateFormComponent implements OnInit {
   mode: 'constructor' | 'settings' = 'constructor';
 
+  draggedItem: FormElementData | null = null;
+  isDragOver = false;
   drugItems: FormElementData[] = []; // Элементы левого списка
 
   formElements: FormElementData[] = []; // Элементы правого списка
@@ -60,19 +59,40 @@ export class CreateFormComponent implements OnInit {
     ]
   }
 
+
   toggle(mode: 'constructor' | 'settings') {
     this.mode = mode;
   }
 
-  onDrop(event: CdkDragDrop<FormElementData[]>) {
-    const draggedItem = event.item.data as FormElementData;
+  onDragStart($event: DragEvent, item: FormElementData) {
+    this.draggedItem = item;
+    $event.dataTransfer!.setData('text/plain', ''); // Для Firefox
+    $event.dataTransfer!.effectAllowed = 'copy';
+  }
 
-    const newElement: FormElementData = {
-      id: Date.now(),
-      label: draggedItem.label,
-      type: draggedItem.type,
-    };
+  onDragOver($event: DragEvent) {
+    $event.preventDefault();
+    this.isDragOver = true;
+    $event.dataTransfer!.dropEffect = 'copy';
+  }
 
-    this.formElements.push(newElement);
+  onDrop($event: DragEvent) {
+    $event.preventDefault();
+    this.isDragOver = false;
+
+    if (this.draggedItem) {
+      const newElement = {
+        ...this.draggedItem,
+        id: Date.now() // Уникальный ID
+      };
+
+      this.formElements = [...this.formElements, newElement];
+      this.draggedItem = null;
+    }
+  }
+
+  onDragLeave($event: DragEvent) {
+    $event.preventDefault();
+    this.isDragOver = false;
   }
 }

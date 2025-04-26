@@ -39,20 +39,21 @@
 <!--------- DROP LIST --------->
         <div
           class='form-elements border'
-          cdkDropList
-          id="form-elements-list"
-          [cdkDropListData]='formElements'
-          (cdkDropListDropped)="onDrop($event)"
-          [cdkDropListConnectedTo]="['menuItemsList']"
+          (dragover)="onDragOver($event)"
+          (drop)="onDrop($event)"
+          (dragleave)="onDragLeave($event)"
         >
+          @if (formElements.length === 0) {
+            <div class="drop-placeholder">Перетащите элементы сюда</div>
+          }
           @for (element of formElements; track element.id) {
-          <ng-container cdkDrag [cdkDragData]="element">
+          <ng-container>
             @switch (element.label) {
               @case ('Однострочный ответ') {
-                <app-text-answer cdkDrag [typeAnswer]="'single'" />
+                <app-text-answer [typeAnswer]="'single'" />
               }
               @case ('Многострочный ответ') {
-                <app-text-answer cdkDrag [typeAnswer]="'multi'" />
+                <app-text-answer [typeAnswer]="'multi'" />
               }
 <!--              @case ('Список одиночного выбора') {-->
 <!--                <app-choice-answer [type]="'single'" />-->
@@ -78,23 +79,13 @@
 <!-------    DRAG LIST --------->
     <ul
       class='content__list'
-      cdkDropList
-      id="menuItemsList"
-      [cdkDropListData]="drugItems"
-      (cdkDropListDropped)="onDrop($event)"
     >
       @for (item of drugItems; track item.label) {
         <li
+          draggable="true"
+          (dragstart)="onDragStart($event, item)"
           class='content__list-item cursor-pointer'
-          cdkDrag
-          [cdkDragData]="item"
         >
-          <ng-template cdkDragPreview>
-            <li class="content__list-item cursor-pointer preview">
-              <i [class]="item.icon" class="icon"></i> {{item.label}}
-            </li>
-          </ng-template>
-
           <i [class]='item.icon' class='icon'></i> {{item.label}}
         </li>
       }
