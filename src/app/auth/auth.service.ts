@@ -48,7 +48,6 @@ export class AuthService {
 
   private initializeAuthState() {
     onAuthStateChanged(this.auth, (user) => {
-      console.log('User from Firebase:', user);
       this.ngZone.run(() => {
         this.user$.next(user);
         if (user) {

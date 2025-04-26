@@ -36,33 +36,36 @@
           <textarea class='form-input' type='text' placeholder='Описание'></textarea>
         </div>
 
-<!--------- DROP LIST --------->
+
+        <!--------- DROP LIST --------->
         <div
           class='form-elements border'
-          (dragover)="onDragOver($event)"
-          (drop)="onDrop($event)"
-          (dragleave)="onDragLeave($event)"
         >
-          @if (formElements.length === 0) {
-            <div class="drop-placeholder">Перетащите элементы сюда</div>
-          }
-          @for (element of formElements; track element.id) {
-          <ng-container>
-            @switch (element.label) {
-              @case ('Однострочный ответ') {
-                <app-text-answer [typeAnswer]="'single'" />
-              }
-              @case ('Многострочный ответ') {
-                <app-text-answer [typeAnswer]="'multi'" />
-              }
-<!--              @case ('Список одиночного выбора') {-->
-<!--                <app-choice-answer [type]="'single'" />-->
-<!--              }-->
-<!--              @case ('Список множественного выбора') {-->
-<!--                <app-choice-answer [type]="'multiple'" />-->
-<!--              }-->
-            }
-          </ng-container>
+<!--      Первая зона сброса-->
+          <ng-container *ngTemplateOutlet="dropZone; context: {index: 0}"></ng-container>
+
+          @for (element of formElements; track element.id; let i = $index) {
+            <div
+              class='form-element-wrapper'
+            >
+              <ng-container>
+                @switch (element.label) {
+                  @case ('Однострочный ответ') {
+                    <app-text-answer [typeAnswer]="'single'"/>
+                  }
+                  @case ('Многострочный ответ') {
+                    <app-text-answer [typeAnswer]="'multi'"/>
+                  }
+                  <!--              @case ('Список одиночного выбора') {-->
+                    <!--                <app-choice-answer [type]="'single'" />-->
+                    <!--              }-->
+                    <!--              @case ('Список множественного выбора') {-->
+                    <!--                <app-choice-answer [type]="'multiple'" />-->
+                    <!--              }-->
+                }
+              </ng-container>
+              <ng-container *ngTemplateOutlet="dropZone; context: {index: i+1}"></ng-container>
+            </div>
           }
         </div>
       </div>
@@ -76,7 +79,7 @@
   >
     <h3 class='content__heading'>Элементы формы</h3>
 
-<!-------    DRAG LIST --------->
+    <!-------    DRAG LIST --------->
     <ul
       class='content__list'
     >
@@ -86,7 +89,7 @@
           (dragstart)="onDragStart($event, item)"
           class='content__list-item cursor-pointer'
         >
-          <i [class]='item.icon' class='icon'></i> {{item.label}}
+          <i [class]='item.icon' class='icon'></i> {{ item.label }}
         </li>
       }
     </ul>
@@ -100,5 +103,17 @@
 <ng-template #settings>
   <div class='content'>
     <h3 class='content__heading'>Настройки</h3>
+  </div>
+</ng-template>
+
+<ng-template #dropZone let-index="index">
+  <div class="drop-indicator"
+       [ngClass]="{'active': activeDropZone === index}"
+       (dragover)="onDragOver($event, index)"
+       (drop)="onDrop($event, index)"
+       (dragleave)="onDragLeave($event)"
+
+  >
+    <div class='line'></div>
   </div>
 </ng-template>
