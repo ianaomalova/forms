@@ -3,6 +3,7 @@ import {NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet} from '@angular/common
 import {PrimeIcons} from 'primeng/api';
 import {TextAnswerComponent} from '../../ui/form-builder/text-answer/text-answer.component';
 import {FormElementData, FormElementType} from '../../../models/formElement.interface';
+import {DRUG_ITEMS} from '../../../models/drugItems';
 
 @Component({
   selector: 'app-create-form',
@@ -21,44 +22,13 @@ export class CreateFormComponent implements OnInit {
 
   draggedItem: FormElementData | null = null;
   isDragOver = false;
-  drugItems: FormElementData[] = []; // Элементы левого списка
+  drugItems: FormElementData[] = DRUG_ITEMS; // Элементы левого списка
 
   formElements: FormElementData[] = []; // Элементы правого списка
 
 
   ngOnInit() {
-    this.initItems();
   }
-
-  initItems() {
-    this.drugItems = [
-      {
-        id: 1,
-        label: 'Однострочный ответ',
-        icon: PrimeIcons.PEN_TO_SQUARE,
-        type: FormElementType.SINGLE_TEXT,
-      },
-      {
-        id: 2,
-        label: 'Многострочный ответ',
-        icon: PrimeIcons.ALIGN_LEFT,
-        type: FormElementType.SINGLE_TEXT,
-      },
-      {
-        id: 3,
-        label: 'Список одиночного выбора',
-        icon: PrimeIcons.CHEVRON_CIRCLE_DOWN,
-        type: FormElementType.SINGLE_TEXT,
-      },
-      {
-        id: 4,
-        label: 'Список множественного выбора',
-        icon: PrimeIcons.PLUS,
-        type: FormElementType.SINGLE_TEXT,
-      }
-    ]
-  }
-
 
   toggle(mode: 'constructor' | 'settings') {
     this.mode = mode;
