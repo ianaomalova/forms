@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Val
 import {FormElementType} from '../../../../models/formElement.interface';
 import {NgClass} from '@angular/common';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {PrimeIcons} from 'primeng/api';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class TextAnswerComponent implements OnInit {
   @Input() typeAnswer: FormElementType = FormElementType.SINGLE_TEXT;
   @Output() dragStarted = new EventEmitter<DragEvent>();
   @Output() deleteRequested = new EventEmitter<void>();
-  @Output() copyRequested = new EventEmitter<string>();
+  @Output() copyRequested = new EventEmitter<any>();
 
   private closeMenuTimeout: any;
   protected readonly FormElementType = FormElementType;
@@ -45,7 +46,6 @@ export class TextAnswerComponent implements OnInit {
   form!: FormGroup;
 
   showCopyMenu = false;
-  copyMenuPosition = { top: '0', left: '0' };
 
   constructor(private formBuilder: FormBuilder) {
   }
@@ -85,11 +85,9 @@ export class TextAnswerComponent implements OnInit {
   }
 
   openCopyMenu(event: MouseEvent) {
-    this.showCopyMenu = true;
-    this.copyMenuPosition = {
-      top: `${event.clientY - 10}px`,
-      left: `${event.clientX - 10}px`
-    }
+    setTimeout(() => {
+      this.showCopyMenu = true;
+    }, 0);
 
     event.stopPropagation();
   }
@@ -107,10 +105,41 @@ export class TextAnswerComponent implements OnInit {
   copyElement(position: 'above'|'below'| 'bottom' ) {
     clearTimeout(this.closeMenuTimeout);
     this.closeCopyMenu();
-    this.copyRequested.emit(position);
+    const element = {
+      id: Date.now(),
+      value: this.form.value,
+      position,
+      icon: this.icon,
+      label: this.label
+    };
+    this.copyRequested.emit(element);
   }
 
   isChoiceType() {
     return this.typeAnswer === FormElementType.SINGLE_CHOICE || this.typeAnswer === FormElementType.MULTI_CHOICE;
+  }
+
+  get icon() {
+    if (this.typeAnswer === FormElementType.SINGLE_TEXT) {
+      return PrimeIcons.PEN_TO_SQUARE;
+    } else if (this.typeAnswer === FormElementType.MULTI_TEXT) {
+      return PrimeIcons.ALIGN_LEFT;
+    } else if (this.typeAnswer === FormElementType.SINGLE_CHOICE) {
+      return PrimeIcons.CHEVRON_CIRCLE_DOWN;
+    } else {
+      return PrimeIcons.PLUS_CIRCLE;
+    }
+  }
+
+  get label() {
+    if (this.typeAnswer === FormElementType.SINGLE_TEXT) {
+      return 'Однострочный ответ';
+    } else if (this.typeAnswer === FormElementType.MULTI_TEXT) {
+      return 'Многострочный ответ';
+    } else if (this.typeAnswer === FormElementType.SINGLE_CHOICE) {
+      return 'Список одиночного выбора';
+    } else {
+      return 'Список множественного выбора';
+    }
   }
 }

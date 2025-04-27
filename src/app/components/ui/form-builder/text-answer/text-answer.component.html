@@ -52,23 +52,12 @@
       <!-- Нижний блок -->
       <div class='form__element-footer'>
         <div class='form__element-type'>
-          @if (typeAnswer === FormElementType.SINGLE_TEXT) {
-            <i class='pi pi-pen-to-square form-element__type-icon'></i>
-            <span>Однострочный ответ</span>
-          } @else if (typeAnswer === FormElementType.MULTI_TEXT) {
-            <i class='pi pi-align-left form-element__type-icon'></i>
-            <span>Многострочный ответ</span>
-          } @else if (typeAnswer === FormElementType.SINGLE_CHOICE) {
-            <i class='pi pi-chevron-circle-down form-element__type-icon'></i>
-            <span>Список одиночного выбора</span>
-          } @else {
-            <i class='pi pi-plus-circle form-element__type-icon'></i>
-            <span>Список множественного выбора</span>
-          }
+          <i class='form-element__type-icon' [class]='icon'></i>
+          <span>{{label}}</span>
         </div>
 
         <div class='form-element__actions'>
-          <div class='form__element-copy-btn-wrapper' >
+          <div class='form__element-copy-btn-wrapper'>
             <button
               class='form__element-copy-btn cursor-pointer'
               (mouseenter)='openCopyMenu($event)'
@@ -81,24 +70,30 @@
             class="form__element--menu-copy-wrapper"
             (mouseleave)="closeCopyMenu()"
             (mouseenter)="onMenuEnter()"
+            [hidden]='!showCopyMenu'
             [@menuAnimation]="showCopyMenu ? 'visible' : 'hidden'"
           >
             <div class="copy__menu">
               <div class="copy__menu-arrow"></div>
               <div class='copy__menu-btn-wrapper'>
                 <i class='pi pi-copy'></i>
-                <button (click)="copyElement('above')" class='copy__menu-btn cursor-pointer'>Вставить выше</button>
+                <button (click)="copyElement('above')" class='copy__menu-btn cursor-pointer'>Создать копию над блоком
+                </button>
               </div>
               <div class='copy__menu-btn-wrapper'>
                 <i class='pi pi-copy'></i>
-                <button (click)="copyElement('below')" class='copy__menu-btn cursor-pointer'>Вставить ниже</button>
+                <button (click)="copyElement('below')" class='copy__menu-btn cursor-pointer'>Создать копию под блоком
+                </button>
               </div>
               <div class='copy__menu-btn-wrapper'>
                 <i class='pi pi-copy'></i>
-                <button (click)="copyElement('bottom')" class='copy__menu-btn cursor-pointer'>Вставить внизу</button>
+                <button (click)="copyElement('bottom')" class='copy__menu-btn cursor-pointer'>Создать копию внизу
+                  формы
+                </button>
               </div>
             </div>
           </div>
+
 
           <label class="form-element__toggle">
             <input

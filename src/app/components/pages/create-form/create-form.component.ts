@@ -101,4 +101,20 @@ export class CreateFormComponent implements OnInit {
   }
 
   protected readonly FormElementType = FormElementType;
+
+  copyFormElement($event: any, i: number) {
+    const newElement = {
+      ...$event.value,
+      icon: $event.icon,
+      label: $event.label,
+      id: $event.id,
+    }
+    if ($event.position === 'above') {
+      this.formElements.splice(i, 0, newElement);
+    } else if ($event.position === 'below') {
+      this.formElements.splice(i + 1, 0, newElement);
+    } else {
+      this.formElements.push(newElement);
+    }
+  }
 }
