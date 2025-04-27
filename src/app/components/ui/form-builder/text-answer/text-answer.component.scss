@@ -91,6 +91,7 @@ input {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
 }
 
 .form__element-delete-btn {
@@ -110,7 +111,7 @@ input {
   border-radius: 8px;
 }
 
-.form-element__action-btn--copy {
+.form__element-copy-btn {
   border: none;
   outline: none;
   background: none;
@@ -121,6 +122,10 @@ input {
   }
 }
 
+.form__element-copy-btn:hover {
+  background-color: var(--bg-light);
+  border-radius: 8px;
+}
 
 .form-element__options-controls {
   display: flex;
@@ -149,7 +154,60 @@ input {
   color: var(--accent);
 }
 
+.form__element--menu-copy-wrapper {
+  position: absolute;
+  bottom: 50px;
+  left: 17px;
+  padding: 10px 10px;
+  z-index: 10;
+  background-color: rgba(100, 108, 255);
+  width: 200px;
+  border-radius: 10px;
+}
 
+.copy__menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.copy__menu-arrow {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  z-index: -100;
+  background-color: rgba(100, 108, 255);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.copy__menu-btn-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 5px;
+
+  i {
+    color: var(--text-light);
+  }
+}
+
+.copy__menu-btn {
+  border: none;
+  outline: none;
+  background: none;
+  text-align: left;
+  padding: 5px 10px;
+  color: var(--text-light);
+  font-weight: 300;
+}
+
+.copy__menu-btn-wrapper:hover {
+  background-color: rgba(117, 127, 193, 0.62);
+  border-radius: 6px;
+}
 
 .form-element__toggle {
   position: relative;
