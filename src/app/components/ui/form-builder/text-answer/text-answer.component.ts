@@ -39,6 +39,9 @@ export class TextAnswerComponent implements OnInit {
   @Output() deleteRequested = new EventEmitter<void>();
   @Output() copyRequested = new EventEmitter<string>();
 
+  private closeMenuTimeout: any;
+  protected readonly FormElementType = FormElementType;
+
   form!: FormGroup;
 
   showCopyMenu = false;
@@ -61,12 +64,8 @@ export class TextAnswerComponent implements OnInit {
     this.addOption();
   }
 
-  onDelete() {
+  deleteElement() {
     this.deleteRequested.emit();
-  }
-
-  onCopy(position: string) {
-    this.copyRequested.emit(position);
   }
 
   get options(): FormArray {
@@ -96,16 +95,20 @@ export class TextAnswerComponent implements OnInit {
   }
 
   closeCopyMenu() {
-    this.showCopyMenu = false;
+    this.closeMenuTimeout = setTimeout(() => {
+      this.showCopyMenu = false;
+    }, 300);
+  }
+
+  onMenuEnter() {
+    clearTimeout(this.closeMenuTimeout);
   }
 
   copyElement(position: 'above'|'below'| 'bottom' ) {
+    clearTimeout(this.closeMenuTimeout);
     this.closeCopyMenu();
     this.copyRequested.emit(position);
   }
-
-  checked: boolean = false;
-  protected readonly FormElementType = FormElementType;
 
   isChoiceType() {
     return this.typeAnswer === FormElementType.SINGLE_CHOICE || this.typeAnswer === FormElementType.MULTI_CHOICE;

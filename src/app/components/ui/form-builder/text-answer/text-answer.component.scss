@@ -154,10 +154,11 @@ input {
   color: var(--accent);
 }
 
+// Попап для копирования
 .form__element--menu-copy-wrapper {
   position: absolute;
   bottom: 50px;
-  left: 17px;
+  right: 20px;
   padding: 10px 10px;
   z-index: 10;
   background-color: rgba(100, 108, 255);
@@ -208,7 +209,10 @@ input {
   background-color: rgba(117, 127, 193, 0.62);
   border-radius: 6px;
 }
+// --------------------------------
 
+
+// Тогл
 .form-element__toggle {
   position: relative;
   display: inline-block;
@@ -261,4 +265,5 @@ input:checked + .form-element__toggle-slider:before {
 .form-element__toggle-slider:before {
   border-radius: 50%;
 }
+// --------------------------------
 
