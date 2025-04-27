@@ -1,37 +1,100 @@
-<div class='wrapper'>
+<div class='form__element'>
+  <div class='form__element-content'>
+    <form class='form__element-form' [formGroup]='form'>
 
-  <div class='main-col'>
-    <div class='input'>
-      <input class='form-input' type='text' placeholder='Вопрос'>
-    </div>
-
-    <div class='bottom-row'>
-      <div class='type-answer'>
-        @if (typeAnswer === "single") {
-          <i class='pi pi-pen-to-square'></i>
-          Однострочный ответ
-        } @else {
-          <i class='pi pi-align-left'></i>
-          Многострочный ответ
-        }
+      <!-- Общая шапка формы: вопрос -->
+      <div class='form__element-header'>
+        <input
+          class='form-input form-element__input-field'
+          type='text'
+          placeholder='Вопрос'
+          formControlName='question'
+        >
       </div>
 
-      <div class='actions'>
-        <button class='copy-btn cursor-pointer'>
-          <i class='pi pi-copy'></i>
-        </button>
-        <p-toggleswitch [(ngModel)]="checked" />
-        <button class='delete-btn cursor-pointer'>
-          <i class='pi pi-times'></i>
-        </button>
-      </div>
+      <!-- Блок вариантов ответов -->
+      @if (isChoiceType()) {
+        <div class='form__element-options' formArrayName='options'>
+          @for (option of options.controls; track $index) {
+            <div class='form-element__option'>
+              <div
+                class='form__element-option--type'
+                [ngClass]="{
+                 'radio': typeAnswer === FormElementType.SINGLE_CHOICE,
+                 'checkbox': typeAnswer === FormElementType.MULTI_CHOICE
+               }">
+              </div>
+              <input
+                class='form-input form-element__option-input'
+                [formControlName]="$index"
+                [placeholder]="'Вариант ' + ($index + 1)"
+              >
 
-    </div>
+              @if (options.length > 1) {
+                <button
+                  class='form__element-delete-btn cursor-pointer'
+                  (click)='removeOption($index)'
+                >
+                  <i class='pi pi-trash'></i>
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <div class='form-element__options-controls'>
+          <button class='form-element__add-btn' (click)='addOption()'>
+            Добавить вариант
+          </button>
+        </div>
+      }
+
+      <!-- Нижний блок -->
+      <div class='form__element-footer'>
+        <div class='form__element-type'>
+          @if (typeAnswer === FormElementType.SINGLE_TEXT) {
+            <i class='pi pi-pen-to-square form-element__type-icon'></i>
+            <span>Однострочный ответ</span>
+          } @else if (typeAnswer === FormElementType.MULTI_TEXT) {
+            <i class='pi pi-align-left form-element__type-icon'></i>
+            <span>Многострочный ответ</span>
+          } @else if (typeAnswer === FormElementType.SINGLE_CHOICE) {
+            <i class='pi pi-chevron-circle-down form-element__type-icon'></i>
+            <span>Список одиночного выбора</span>
+          } @else {
+            <i class='pi pi-plus-circle form-element__type-icon'></i>
+            <span>Список множественного выбора</span>
+          }
+        </div>
+
+        <div class='form-element__actions'>
+          <button class='form-element__action-btn--copy cursor-pointer'>
+            <i class='pi pi-copy'></i>
+          </button>
+
+          <label class="form-element__toggle">
+            <input
+              type="checkbox"
+              class="form-element__toggle-input"
+              formControlName='required'
+            >
+            <span class="form-element__toggle-slider"></span>
+          </label>
+
+          <button
+            class='form__element-delete-btn'
+            (click)='onDelete()'
+          >
+            <i class='pi pi-times'></i>
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
 
-  <div class='drag-and-drop'>
+  <!-- Drag-зона -->
+  <div class='drop--zone' draggable='true' (dragstart)='onDrugStarted($event)'>
     <i class="pi pi-ellipsis-v icon"></i>
     <i class="pi pi-ellipsis-v icon"></i>
   </div>
-
 </div>

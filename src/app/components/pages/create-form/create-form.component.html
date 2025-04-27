@@ -41,27 +41,40 @@
         <div
           class='form-elements border'
         >
-<!--      Первая зона сброса-->
+          <!--      Первая зона сброса-->
           <ng-container *ngTemplateOutlet="dropZone; context: {index: 0}"></ng-container>
 
           @for (element of formElements; track element.id; let i = $index) {
             <div
               class='form-element-wrapper'
+              @fadeOut
             >
               <ng-container>
                 @switch (element.label) {
                   @case ('Однострочный ответ') {
-                    <app-text-answer [typeAnswer]="'single'"/>
+                    <app-text-answer
+                      [typeAnswer]="FormElementType.SINGLE_TEXT"
+                      (deleteRequested)='removeFormElement(i)'
+                    />
                   }
                   @case ('Многострочный ответ') {
-                    <app-text-answer [typeAnswer]="'multi'"/>
+                    <app-text-answer
+                      [typeAnswer]="FormElementType.MULTI_TEXT"
+                      (deleteRequested)='removeFormElement(i)'
+                    />
                   }
-                  <!--              @case ('Список одиночного выбора') {-->
-                    <!--                <app-choice-answer [type]="'single'" />-->
-                    <!--              }-->
-                    <!--              @case ('Список множественного выбора') {-->
-                    <!--                <app-choice-answer [type]="'multiple'" />-->
-                    <!--              }-->
+                  @case ('Список одиночного выбора') {
+                    <app-text-answer
+                      [typeAnswer]="FormElementType.SINGLE_CHOICE"
+                      (deleteRequested)='removeFormElement(i)'
+                    />
+                  }
+                  @case ('Список множественного выбора') {
+                    <app-text-answer
+                      [typeAnswer]="FormElementType.MULTI_CHOICE"
+                      (deleteRequested)='removeFormElement(i)'
+                    />
+                  }
                 }
               </ng-container>
               <ng-container *ngTemplateOutlet="dropZone; context: {index: i+1}"></ng-container>
@@ -83,7 +96,7 @@
     <ul
       class='content__list'
     >
-      @for (item of drugItems; track item.label) {
+      @for (item of dragItems; track item.label) {
         <li
           draggable="true"
           (dragstart)="onDragStart($event, item)"

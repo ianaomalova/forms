@@ -1,7 +1,7 @@
 import { PrimeIcons } from 'primeng/api';
 import {FormElementType} from './formElement.interface';
 
-export const DRUG_ITEMS = [
+export const DRAG_ITEMS = [
   {
     id: 1,
     label: 'Однострочный ответ',
@@ -12,18 +12,18 @@ export const DRUG_ITEMS = [
     id: 2,
     label: 'Многострочный ответ',
     icon: PrimeIcons.ALIGN_LEFT,
-    type: FormElementType.SINGLE_TEXT,
+    type: FormElementType.MULTI_TEXT,
   },
   {
     id: 3,
     label: 'Список одиночного выбора',
     icon: PrimeIcons.CHEVRON_CIRCLE_DOWN,
-    type: FormElementType.SINGLE_TEXT,
+    type: FormElementType.SINGLE_CHOICE,
   },
   {
     id: 4,
     label: 'Список множественного выбора',
-    icon: PrimeIcons.PLUS,
-    type: FormElementType.SINGLE_TEXT,
+    icon: PrimeIcons.PLUS_CIRCLE,
+    type: FormElementType.MULTI_TEXT,
   },
 ];

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {NgClass, NgStyle, NgSwitch, NgSwitchCase, NgTemplateOutlet} from '@angular/common';
-import {PrimeIcons} from 'primeng/api';
+import {NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet} from '@angular/common';
 import {TextAnswerComponent} from '../../ui/form-builder/text-answer/text-answer.component';
 import {FormElementData, FormElementType} from '../../../models/formElement.interface';
-import {DRUG_ITEMS} from '../../../models/drugItems';
+import {DRAG_ITEMS} from '../../../models/drugItems';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-create-form',
@@ -13,18 +13,25 @@ import {DRUG_ITEMS} from '../../../models/drugItems';
     NgTemplateOutlet,
     NgClass,
     TextAnswerComponent,
-    NgStyle,
   ],
   templateUrl: './create-form.component.html',
-  styleUrl: './create-form.component.scss'
+  styleUrl: './create-form.component.scss',
+  animations: [
+    trigger('fadeOut', [
+      transition(':leave', [
+        animate('300ms ease-out', style({ opacity: 0, transform: 'scale(0.95)' }))
+      ])
+    ])
+  ]
 })
 export class CreateFormComponent implements OnInit {
   mode: 'constructor' | 'settings' = 'constructor';
 
   draggedItem: FormElementData | null = null;
   isDragOver = false;
-  drugItems: FormElementData[] = DRUG_ITEMS; // Элементы левого списка
+  dragItems: FormElementData[] = DRAG_ITEMS; // Элементы левого списка
   formElements: FormElementData[] = []; // Элементы правого списка
+  draggedFromForm = false;
 
   activeDropZone: number | null = null;
 
@@ -55,12 +62,21 @@ export class CreateFormComponent implements OnInit {
       return;
     }
 
-    const newElement: FormElementData = {
-      ...this.draggedItem,
-      id: Date.now(),
-    }
+    if (this.draggedFromForm) {
+      const goalIndex = this.activeDropZone;
+      const currentIndex = this.formElements.findIndex(
+        item => item.id = this.draggedItem!.id
+      );
 
-    this.formElements.splice(index, 0, newElement);
+      [this.formElements[goalIndex!], this.formElements[currentIndex]] = [this.formElements[currentIndex], this.formElements[goalIndex!]];
+    } else {
+      const newElement: FormElementData = {
+        ...this.draggedItem,
+        id: Date.now(),
+      }
+
+      this.formElements.splice(index, 0, newElement);
+    }
 
     this.draggedItem = null;
     this.isDragOver = false;
@@ -72,4 +88,17 @@ export class CreateFormComponent implements OnInit {
     this.isDragOver = false;
     this.activeDropZone = null;
   }
+
+  onChildDragStart($event: any, element: FormElementData) {
+    this.draggedItem = element;
+    this.draggedFromForm = true;
+    $event.dataTransfer!.setData('text/plain', '');
+    $event.dataTransfer!.effectAllowed = 'move';
+  }
+
+  removeFormElement(index: number) {
+    this.formElements.splice(index, 1);
+  }
+
+  protected readonly FormElementType = FormElementType;
 }
