@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {FormElementType} from '../../../../models/formElement.interface';
+import {FormElementData, FormElementType} from '../../../../models/formElement.interface';
 import {NgClass} from '@angular/common';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {PrimeIcons} from 'primeng/api';
@@ -35,7 +35,7 @@ import {PrimeIcons} from 'primeng/api';
   ]
 })
 export class TextAnswerComponent implements OnInit {
-  @Input() typeAnswer: FormElementType = FormElementType.SINGLE_TEXT;
+  @Input() element!: FormElementData;
   @Output() dragStarted = new EventEmitter<DragEvent>();
   @Output() deleteRequested = new EventEmitter<void>();
   @Output() copyRequested = new EventEmitter<any>();
@@ -56,12 +56,16 @@ export class TextAnswerComponent implements OnInit {
 
   initForm() {
     this.form = this.formBuilder.group({
-      question: ['', Validators.required],
+      question: [this.element.question, Validators.required],
       options: this.formBuilder.array([]),
-      required: [false],
+      required: [this.element.required],
     })
 
-    this.addOption();
+    if (this.element.options!.length > 0) {
+      this.initOptions();
+    } else {
+      this.addOption();
+    }
   }
 
   deleteElement() {
@@ -70,6 +74,13 @@ export class TextAnswerComponent implements OnInit {
 
   get options(): FormArray {
     return this.form.get('options') as FormArray;
+  }
+
+  initOptions() {
+    const optionsArray = this.form.get('options') as FormArray;
+    this.element.options!.forEach((option) => {
+      optionsArray.push(this.formBuilder.control(option, Validators.required));
+    })
   }
 
   addOption() {
@@ -109,37 +120,15 @@ export class TextAnswerComponent implements OnInit {
       id: Date.now(),
       value: this.form.value,
       position,
-      icon: this.icon,
-      label: this.label
+      icon: this.element.icon,
+      label: this.element.label,
+      type: this.element.type
     };
     this.copyRequested.emit(element);
   }
 
   isChoiceType() {
-    return this.typeAnswer === FormElementType.SINGLE_CHOICE || this.typeAnswer === FormElementType.MULTI_CHOICE;
-  }
-
-  get icon() {
-    if (this.typeAnswer === FormElementType.SINGLE_TEXT) {
-      return PrimeIcons.PEN_TO_SQUARE;
-    } else if (this.typeAnswer === FormElementType.MULTI_TEXT) {
-      return PrimeIcons.ALIGN_LEFT;
-    } else if (this.typeAnswer === FormElementType.SINGLE_CHOICE) {
-      return PrimeIcons.CHEVRON_CIRCLE_DOWN;
-    } else {
-      return PrimeIcons.PLUS_CIRCLE;
-    }
-  }
-
-  get label() {
-    if (this.typeAnswer === FormElementType.SINGLE_TEXT) {
-      return 'Однострочный ответ';
-    } else if (this.typeAnswer === FormElementType.MULTI_TEXT) {
-      return 'Многострочный ответ';
-    } else if (this.typeAnswer === FormElementType.SINGLE_CHOICE) {
-      return 'Список одиночного выбора';
-    } else {
-      return 'Список множественного выбора';
-    }
+    return (this.element.type === FormElementType.SINGLE_CHOICE ||
+      this.element.type === FormElementType.MULTI_CHOICE);
   }
 }

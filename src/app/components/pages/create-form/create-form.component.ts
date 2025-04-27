@@ -44,6 +44,7 @@ export class CreateFormComponent implements OnInit {
 
   onDragStart($event: DragEvent, item: FormElementData) {
     this.draggedItem = item;
+    console.log(this.draggedItem);
     $event.dataTransfer!.setData('text/plain', ''); // Для Firefox
     $event.dataTransfer!.effectAllowed = 'copy';
   }
@@ -62,21 +63,16 @@ export class CreateFormComponent implements OnInit {
       return;
     }
 
-    if (this.draggedFromForm) {
-      const goalIndex = this.activeDropZone;
-      const currentIndex = this.formElements.findIndex(
-        item => item.id = this.draggedItem!.id
-      );
-
-      [this.formElements[goalIndex!], this.formElements[currentIndex]] = [this.formElements[currentIndex], this.formElements[goalIndex!]];
-    } else {
-      const newElement: FormElementData = {
-        ...this.draggedItem,
-        id: Date.now(),
-      }
-
-      this.formElements.splice(index, 0, newElement);
+    console.log(this.draggedItem);
+    const newElement: FormElementData = {
+      ...this.draggedItem,
+      question: '',
+      required: false,
+      options: [],
+      id: Date.now(),
     }
+
+    this.formElements.splice(index, 0, newElement);
 
     this.draggedItem = null;
     this.isDragOver = false;
@@ -103,12 +99,16 @@ export class CreateFormComponent implements OnInit {
   protected readonly FormElementType = FormElementType;
 
   copyFormElement($event: any, i: number) {
+    console.log($event.value);
     const newElement = {
-      ...$event.value,
+      question: $event.value.question,
+      type: $event.type,
+      options: $event.value.options,
       icon: $event.icon,
       label: $event.label,
       id: $event.id,
     }
+
     if ($event.position === 'above') {
       this.formElements.splice(i, 0, newElement);
     } else if ($event.position === 'below') {

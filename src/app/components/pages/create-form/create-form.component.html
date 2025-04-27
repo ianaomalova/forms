@@ -53,28 +53,28 @@
                 @switch (element.label) {
                   @case ('Однострочный ответ') {
                     <app-text-answer
-                      [typeAnswer]="FormElementType.SINGLE_TEXT"
+                      [element]='element'
                       (deleteRequested)='removeFormElement(i)'
                       (copyRequested)="copyFormElement($event, i)"
                     />
                   }
                   @case ('Многострочный ответ') {
                     <app-text-answer
-                      [typeAnswer]="FormElementType.MULTI_TEXT"
+                      [element]='element'
                       (deleteRequested)='removeFormElement(i)'
                       (copyRequested)="copyFormElement($event, i)"
                     />
                   }
                   @case ('Список одиночного выбора') {
                     <app-text-answer
-                      [typeAnswer]="FormElementType.SINGLE_CHOICE"
+                      [element]='element'
                       (deleteRequested)='removeFormElement(i)'
                       (copyRequested)="copyFormElement($event, i)"
                     />
                   }
                   @case ('Список множественного выбора') {
                     <app-text-answer
-                      [typeAnswer]="FormElementType.MULTI_CHOICE"
+                      [element]='element'
                       (deleteRequested)='removeFormElement(i)'
                       (copyRequested)="copyFormElement($event, i)"
                     />

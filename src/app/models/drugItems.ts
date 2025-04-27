@@ -24,6 +24,6 @@ export const DRAG_ITEMS = [
     id: 4,
     label: 'Список множественного выбора',
     icon: PrimeIcons.PLUS_CIRCLE,
-    type: FormElementType.MULTI_TEXT,
+    type: FormElementType.MULTI_CHOICE,
   },
 ];

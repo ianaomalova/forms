@@ -20,8 +20,8 @@
               <div
                 class='form__element-option--type'
                 [ngClass]="{
-                 'radio': typeAnswer === FormElementType.SINGLE_CHOICE,
-                 'checkbox': typeAnswer === FormElementType.MULTI_CHOICE
+                 'radio': element.type === FormElementType.SINGLE_CHOICE,
+                 'checkbox': element.type === FormElementType.MULTI_CHOICE
                }">
               </div>
               <input
@@ -52,8 +52,8 @@
       <!-- Нижний блок -->
       <div class='form__element-footer'>
         <div class='form__element-type'>
-          <i class='form-element__type-icon' [class]='icon'></i>
-          <span>{{label}}</span>
+          <i class='form-element__type-icon' [class]='element.icon'></i>
+          <span>{{element.label}}</span>
         </div>
 
         <div class='form-element__actions'>
